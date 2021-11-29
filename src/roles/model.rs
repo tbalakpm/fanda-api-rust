@@ -20,30 +20,32 @@ pub struct Role {
 
 impl Role {
     pub async fn find_all(pool: &PgPool) -> Result<Vec<Role>> {
-        let roles = sqlx::query!(
+        let roles = sqlx::query_as!(
+            Role,
             r#"
-            SELECT id AS "id: i32", role_name, active
+            SELECT id, role_name AS name, active
             FROM roles
             ORDER BY id
             "#
         )
         .fetch_all(pool)
-        .await?
-        .into_iter()
-        .map(|rec| Role {
-            id: rec.id,
-            name: rec.role_name,
-            active: rec.active,
-        })
-        .collect();
+        .await?;
+        // .into_iter()
+        // .map(|rec| Role {
+        //     id: rec.id,
+        //     name: rec.role_name,
+        //     active: rec.active,
+        // })
+        // .collect();
 
         Ok(roles)
     }
 
     pub async fn find_by_id(id: i32, pool: &PgPool) -> Result<Option<Role>> {
-        let rec = sqlx::query!(
+        let rec = sqlx::query_as!(
+            Role,
             r#"
-            SELECT id AS "id: i32", role_name, active
+            SELECT id, role_name AS name, active
             FROM roles
             WHERE id = $1
             "#,
@@ -52,15 +54,16 @@ impl Role {
         .fetch_optional(&*pool)
         .await?;
 
-        Ok(rec.map(|rec| Role {
-            id: rec.id,
-            name: rec.role_name,
-            active: rec.active,
-        }))
+        // Ok(rec.map(|rec| Role {
+        //     id: rec.id,
+        //     name: rec.role_name,
+        //     active: rec.active,
+        // }))
+        Ok(rec)
     }
 
     pub async fn create(role: RoleRequest, pool: &PgPool) -> Result<Role> {
-        let mut tx = pool.begin().await?;
+        // let mut tx = pool.begin().await?;
 
         let rec = sqlx::query!(
             r#"
@@ -71,7 +74,7 @@ impl Role {
             role.name,
             role.active
         )
-        .fetch_one(&mut tx)
+        .fetch_one(pool) // &mut tx
         .await?;
 
         // let row_id: i32 = sqlx::query("SELECT last_insert_rowid()")
@@ -79,7 +82,7 @@ impl Role {
         //     .fetch_one(&mut tx)
         //     .await?;
 
-        tx.commit().await?;
+        // tx.commit().await?;
 
         Ok(Role {
             id: rec.id,

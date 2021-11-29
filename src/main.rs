@@ -15,7 +15,10 @@ async fn index() -> impl Responder {
     HttpResponse::Ok().body(
         r#"
     Welcome to Fanda API.
+
     Available routes:
+    Roles:
+    ------
     GET     /roles      ->  list of all roles
     POST    /roles      ->  create new role, example: {"name": "Administrator", "active": false}
     GET     /roles/{id} ->  show one role with requested id
@@ -40,11 +43,12 @@ async fn main() -> Result<()> {
     info!("Using PostgreSQL database at: {}", &database_url);
     // let db_pool = SqlitePoolOptions::new().connect(&database_url).await?;
     let db_pool = PgPoolOptions::new().connect(&database_url).await?;
+    // .expect("Database connection failed");
 
-    sqlx::query!(r#"SELECT id AS "id: i32" FROM roles LIMIT 1"#)
-        .fetch_optional(&db_pool)
-        .await
-        .expect("no connection to the database");
+    // sqlx::query!(r#"SELECT id AS "id: i32" FROM roles LIMIT 1"#)
+    //     .fetch_optional(&db_pool)
+    //     .await
+    //     .expect("No connection to the database");
 
     let server = HttpServer::new(move || {
         App::new()
