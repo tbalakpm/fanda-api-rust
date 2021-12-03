@@ -10,6 +10,7 @@ use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 
 mod roles;
+mod users;
 
 async fn index() -> impl Responder {
     HttpResponse::Ok().body(
@@ -57,6 +58,7 @@ async fn main() -> Result<()> {
             .wrap(middleware::Logger::default())
             .route("/", web::get().to(index))
             .configure(roles::init) // init role routes
+            .configure(users::init) // init user routes
     })
     .bind((host, port))?;
 

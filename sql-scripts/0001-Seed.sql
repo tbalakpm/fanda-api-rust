@@ -1,6 +1,11 @@
-﻿INSERT INTO users (id, login_name, email, mobile_number, first_name, last_name, user_password, is_enabled, created_at, is_reset_pwd)
+﻿INSERT INTO roles (id, role_name, is_enabled) VALUES
+(1, 'Administrators', true),
+(2, 'Managers', true),
+(3, 'Staff', true);
+
+INSERT INTO users (id, login_name, email_address, mobile_number, first_name, last_name, password_hash, password_salt, role_id, is_enabled)
 VALUES
-(1, 'admin', 'admin@fanda2.com', '9999999999', 'System', 'Administrator', '123', true, '2020-01-01', false);
+(1, 'admin', 'admin@fandatech.net', '9999999999', 'System', 'Administrator', '123:hash', '123:salt', 1, true);
 
 INSERT INTO ledger_groups (id, code, group_name, group_type, parent_id) VALUES
 (100, 'AUSPIC', 'AUSPICIOUS ACCOUNTS', 1, NULL),

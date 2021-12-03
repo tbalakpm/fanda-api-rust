@@ -2,13 +2,13 @@
 @host = 127.0.0.1:8080
 ###
 
-GET http://{{host}}/roles
+GET http://{{host}}/users
 
 ###
-GET http://127.0.0.1:8080/roles/2
+GET http://127.0.0.1:8080/users/2
 
 ###
-POST http://{{host}}/roles
+POST http://{{host}}/users
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###
-PUT http://{{host}}/roles/1
+PUT http://{{host}}/users/1
 Content-Type: application/json
 
 {
@@ -27,4 +27,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://{{host}}/roles/1
+DELETE http://{{host}}/users/1
