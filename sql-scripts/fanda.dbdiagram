@@ -1,0 +1,350 @@
+Table "users" {
+  "id" int [pk, not null, increment]
+  "login_name" varchar(16) [unique, not null]
+  "email" varchar(100) [unique, not null]
+  "mobile_number" varchar(10) [unique, not null]
+  "first_name" varchar(25)
+  "last_name" varchar(25)
+  "user_password" varchar(16) [not null]
+  "login_at" timestamp
+  "is_reset_pwd" boolean [not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "addresses" {
+  "id" int [pk, not null, increment]
+  "attention" varchar(25)
+  "addr_line1" varchar(50)
+  "addr_line2" varchar(50)
+  "city" varchar(25)
+  "addr_state" varchar(25)
+  "country" varchar(25)
+  "postal_code" varchar(10)
+  "phone" varchar(25)
+  "fax" varchar(25)
+}
+
+Table "contacts" {
+  "id" int [pk, not null, increment]
+  "salutation" varchar(5)
+  "first_name" varchar(25)
+  "last_name" varchar(25)
+  "designation" varchar(25)
+  "department" varchar(25)
+  "email" varchar(100)
+  "work_phone" varchar(25)
+  "mobile_number" varchar(25)
+}
+
+Table "ledger_groups" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "group_name" varchar(25) [unique, not null]
+  "group_desc" varchar(255)
+  "group_type" int [not null]
+  "parent_id" int
+}
+
+Table "organizations" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "org_name" varchar(50) [unique, not null]
+  "org_desc" varchar(255)
+  "regd_num" varchar(25)
+  "org_pan" varchar(25)
+  "org_tan" varchar(25)
+  "gstin" varchar(25)
+  "address_id" int
+  "contact_id" int
+  "active_year_id" int
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "ledgers" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "ledger_name" varchar(25) [unique, not null]
+  "ledger_desc" varchar(255)
+  "group_id" int [not null]
+  "ledger_type" int [not null]
+  "is_system" boolean [not null]
+  "org_id" int [unique, not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "banks" {
+  "id" int [pk, not null, increment]
+  "ledger_id" int [not null]
+  "account_number" varchar(25) [unique, not null]
+  "account_type" int
+  "ifsc_code" varchar(16) [not null]
+  "micr_code" varchar(16)
+  "branch_code" varchar(16)
+  "branch_name" varchar(25)
+  "address_id" int
+  "contact_id" int
+  "is_default" boolean [not null]
+}
+
+Table "parties" {
+  "id" int [pk, not null, increment]
+  "ledger_id" int [not null]
+  "regd_num" varchar(25)
+  "party_pan" varchar(25)
+  "party_tan" varchar(25)
+  "gstin" varchar(25)
+  "payment_term" int [not null]
+  "credit_limit" numeric(12,2) [not null]
+  "address_id" int
+  "contact_id" int
+}
+
+Table "units" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "unit_name" varchar(25) [unique, not null]
+  "unit_desc" varchar(255)
+  "org_id" int [unique, not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "product_categories" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "category_name" varchar(25) [unique, not null]
+  "category_desc" varchar(255)
+  "parent_id" int
+  "org_id" int [unique, not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "products" {
+  "id" int [pk, not null, increment]
+  "code" varchar(16) [unique, not null]
+  "product_name" varchar(25) [unique, not null]
+  "product_desc" varchar(255)
+  "product_type" int [not null]
+  "category_id" int [not null]
+  "unit_id" int [not null]
+  "cost_price" numeric(12,2) [not null]
+  "selling_price" numeric(12,2) [not null]
+  "tax_code" varchar(16) [not null]
+  "tax_preference" int [not null]
+  "tax_pct" numeric(5,2) [not null]
+  "org_id" int [unique, not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "account_years" {
+  "id" int [pk, not null, increment]
+  "year_code" varchar(16) [unique, not null]
+  "year_begin" date [unique, not null]
+  "year_end" date [not null]
+  "org_id" int [unique, not null]
+  "is_enabled" boolean [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "ledger_balances" {
+  "id" int [pk, not null, increment]
+  "ledger_id" int [unique, not null]
+  "year_id" int [unique, not null]
+  "opening_balance" numeric(12,2) [not null]
+  "balance_sign" char(1) [not null]
+}
+
+Table "serial_numbers" {
+  "id" int [pk, not null, increment]
+  "year_id" int [unique, not null]
+  "serial_module" int [unique, not null]
+  "serial_prefix" varchar(5)
+  "serial_format" varchar(16) [not null]
+  "serial_suffix" varchar(5)
+  "last_serial" varchar(16)
+  "last_number" int [not null]
+  "last_date" timestamp [not null]
+  "serial_reset" int [not null]
+}
+
+Table "journals" {
+  "id" int [pk, not null, increment]
+  "journal_number" varchar(16) [unique, not null]
+  "journal_date" timestamp [not null]
+  "journal_type" int [not null]
+  "journal_sign" char(1) [not null]
+  "ledger_id" int [not null]
+  "year_id" int [unique, not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "journal_items" {
+  "id" int [pk, not null, increment]
+  "journal_id" int [not null]
+  "ledger_id" int
+  "quantity" numeric(7,3) [not null]
+  "amount" numeric(12,2) [not null]
+  "journal_desc" varchar(255)
+  "ref_num" varchar(16)
+  "ref_date" date
+}
+
+Table "consumers" {
+  "id" int [pk, not null, increment]
+  "contact_id" int
+  "address_id" int
+}
+
+Table "invoices" {
+  "id" int [pk, not null, increment]
+  "invoice_number" varchar(16) [unique, not null]
+  "invoice_date" timestamp [not null]
+  "invoice_type" int [not null]
+  "stock_invoice_type" int [not null]
+  "gst_treatment" int [not null]
+  "tax_preference" int [not null]
+  "notes" varchar(255)
+  "party_id" int [not null]
+  "ref_num" varchar(16)
+  "ref_date" date
+  "consumer_id" int
+  "subtotal" numeric(12,2) [not null]
+  "total_qty" numeric(10,3) [not null]
+  "discount_pct" numeric(5,2) [not null]
+  "discount_amt" numeric(9,2) [not null]
+  "total_tax_amt" numeric(9,2) [not null]
+  "misc_add_desc" varchar(25)
+  "misc_add_amt" numeric(9,2) [not null]
+  "net_amount" numeric(12,2) [not null]
+  "year_id" int [unique, not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "inventory" {
+  "id" int [pk, not null, increment]
+  "product_id" int [not null]
+  "tag_number" varchar(16) [unique, not null]
+  "mfg_date" date
+  "expire_date" date
+  "unit_id" int [not null]
+  "qty_on_hand" numeric(10,3) [not null]
+}
+
+Table "invoice_items" {
+  "id" int [pk, not null, increment]
+  "invoice_id" int [not null]
+  "inventory_id" int
+  "item_desc" varchar(255) [not null]
+  "unit_id" int [not null]
+  "qty" numeric(9,3) [not null]
+  "unit_price" numeric(9,2) [not null]
+  "price" numeric(9,2) [not null]
+  "discount_pct" numeric(5,2) [not null]
+  "discount_amt" numeric(9,2) [not null]
+  "tax_pct" numeric(5,2) [not null]
+  "tax_amt" numeric(9,2) [not null]
+  "line_total" numeric(9,2) [not null]
+}
+
+Table "transactions" {
+  "id" int [pk, not null, increment]
+  "debit_ledger_id" int [not null]
+  "credit_ledger_id" int [not null]
+  "quantity" numeric(9,3) [not null]
+  "amount" numeric(12,2) [not null]
+  "tran_desc" varchar(255)
+  "ref_num" varchar(16)
+  "ref_date" date
+  "journal_id" int
+  "invoice_id" int
+}
+
+Ref:"ledger_groups"."id" < "ledger_groups"."parent_id" [update: no action, delete: no action]
+
+Ref:"addresses"."id" < "organizations"."address_id" [update: cascade, delete: no action]
+
+Ref:"contacts"."id" < "organizations"."contact_id" [update: cascade, delete: no action]
+
+Ref:"ledger_groups"."id" < "ledgers"."group_id" [update: cascade, delete: no action]
+
+Ref:"organizations"."id" < "ledgers"."org_id" [update: no action, delete: no action]
+
+Ref:"ledgers"."id" < "banks"."ledger_id" [update: cascade, delete: cascade]
+
+Ref:"addresses"."id" < "banks"."address_id" [update: no action, delete: no action]
+
+Ref:"contacts"."id" < "banks"."contact_id" [update: no action, delete: no action]
+
+Ref:"ledgers"."id" < "parties"."ledger_id" [update: cascade, delete: cascade]
+
+Ref:"addresses"."id" < "parties"."address_id" [update: no action, delete: no action]
+
+Ref:"contacts"."id" < "parties"."contact_id" [update: no action, delete: no action]
+
+Ref:"organizations"."id" < "units"."org_id" [update: cascade, delete: no action]
+
+Ref:"product_categories"."id" < "product_categories"."parent_id" [update: no action, delete: no action]
+
+Ref:"organizations"."id" < "product_categories"."org_id" [update: cascade, delete: no action]
+
+Ref:"product_categories"."id" < "products"."category_id" [update: cascade, delete: no action]
+
+Ref:"units"."id" < "products"."unit_id" [update: no action, delete: no action]
+
+Ref:"organizations"."id" < "products"."org_id" [update: no action, delete: no action]
+
+Ref:"organizations"."id" < "account_years"."org_id" [update: cascade, delete: no action]
+
+Ref:"account_years"."id" < "ledger_balances"."year_id" [update: cascade, delete: no action]
+
+Ref:"account_years"."id" < "serial_numbers"."year_id" [update: cascade, delete: no action]
+
+Ref:"ledgers"."id" < "journals"."ledger_id" [update: cascade, delete: no action]
+
+Ref:"account_years"."id" < "journals"."year_id" [update: no action, delete: no action]
+
+Ref:"journals"."id" < "journal_items"."journal_id" [update: cascade, delete: cascade]
+
+Ref:"ledgers"."id" < "journal_items"."ledger_id" [update: no action, delete: no action]
+
+Ref:"contacts"."id" < "consumers"."contact_id" [update: cascade, delete: no action]
+
+Ref:"addresses"."id" < "consumers"."address_id" [update: cascade, delete: no action]
+
+Ref:"ledgers"."id" < "invoices"."party_id" [update: cascade, delete: no action]
+
+Ref:"consumers"."id" < "invoices"."consumer_id" [update: no action, delete: no action]
+
+Ref:"account_years"."id" < "invoices"."year_id" [update: no action, delete: no action]
+
+Ref:"products"."id" < "inventory"."product_id" [update: cascade, delete: no action]
+
+Ref:"units"."id" < "inventory"."unit_id" [update: no action, delete: no action]
+
+Ref:"invoices"."id" < "invoice_items"."invoice_id" [update: cascade, delete: cascade]
+
+Ref:"inventory"."id" < "invoice_items"."inventory_id" [update: no action, delete: no action]
+
+Ref:"units"."id" < "invoice_items"."unit_id" [update: no action, delete: no action]
+
+Ref:"ledgers"."id" < "transactions"."debit_ledger_id" [update: no action, delete: no action]
+
+Ref:"ledgers"."id" < "transactions"."credit_ledger_id" [update: no action, delete: no action]
+
+Ref:"journals"."id" < "transactions"."journal_id" [update: no action, delete: cascade]
+
+Ref:"invoices"."id" < "transactions"."invoice_id" [update: no action, delete: cascade]

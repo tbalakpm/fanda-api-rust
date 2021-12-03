@@ -20,9 +20,9 @@ async fn index() -> impl Responder {
     Roles:
     ------
     GET     /roles      ->  list of all roles
-    POST    /roles      ->  create new role, example: {"name": "Administrator", "active": false}
+    POST    /roles      ->  create new role, example: {"name": "Administrator", "is_enabled": false}
     GET     /roles/{id} ->  show one role with requested id
-    PUT     /roles{id}  ->  update role with requested id, example: {"name": "Administrator", "active": true}
+    PUT     /roles{id}  ->  update role with requested id, example: {"name": "Administrator", "is_enabled": true}
     DELETE  /roles/{id} ->  delete role with requested id
     "#,
     )

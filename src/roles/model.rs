@@ -8,14 +8,14 @@ use sqlx::{FromRow, PgPool};
 #[derive(Serialize, Deserialize)]
 pub struct RoleRequest {
     pub name: String,
-    pub active: bool,
+    pub is_enabled: bool,
 }
 
 #[derive(Serialize, FromRow)]
 pub struct Role {
     pub id: i32,
     pub name: String,
-    pub active: bool,
+    pub is_enabled: bool,
 }
 
 impl Role {
@@ -23,7 +23,7 @@ impl Role {
         let roles = sqlx::query_as!(
             Role,
             r#"
-            SELECT id, role_name AS name, active
+            SELECT id, role_name AS name, is_enabled
             FROM roles
             ORDER BY id
             "#
@@ -34,7 +34,7 @@ impl Role {
         // .map(|rec| Role {
         //     id: rec.id,
         //     name: rec.role_name,
-        //     active: rec.active,
+        //     is_enabled: rec.is_enabled,
         // })
         // .collect();
 
@@ -45,7 +45,7 @@ impl Role {
         let rec = sqlx::query_as!(
             Role,
             r#"
-            SELECT id, role_name AS name, active
+            SELECT id, role_name AS name, is_enabled
             FROM roles
             WHERE id = $1
             "#,
@@ -57,7 +57,7 @@ impl Role {
         // Ok(rec.map(|rec| Role {
         //     id: rec.id,
         //     name: rec.role_name,
-        //     active: rec.active,
+        //     is_enabled: rec.is_enabled,
         // }))
         Ok(rec)
     }
@@ -67,12 +67,12 @@ impl Role {
 
         let rec = sqlx::query!(
             r#"
-            INSERT INTO roles (role_name, active)
+            INSERT INTO roles (role_name, is_enabled)
             VALUES ($1, $2)
             RETURNING id;
             "#,
             role.name,
-            role.active
+            role.is_enabled
         )
         .fetch_one(pool) // &mut tx
         .await?;
@@ -87,7 +87,7 @@ impl Role {
         Ok(Role {
             id: rec.id,
             name: role.name,
-            active: role.active,
+            is_enabled: role.is_enabled,
         })
     }
 
@@ -95,11 +95,11 @@ impl Role {
         let result = sqlx::query!(
             r#"
             UPDATE roles 
-            SET role_name = $1, active = $2
+            SET role_name = $1, is_enabled = $2
             WHERE id = $3
             "#,
             role.name,
-            role.active,
+            role.is_enabled,
             id
         )
         .execute(pool)
@@ -112,7 +112,7 @@ impl Role {
         Ok(Some(Role {
             id,
             name: role.name,
-            active: role.active,
+            is_enabled: role.is_enabled,
         }))
     }
 
