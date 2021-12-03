@@ -90,4 +90,43 @@ impl Role {
             active: role.active,
         })
     }
+
+    pub async fn update(id: i32, role: RoleRequest, pool: &PgPool) -> Result<Option<Role>> {
+        let result = sqlx::query!(
+            r#"
+            UPDATE roles 
+            SET role_name = $1, active = $2
+            WHERE id = $3
+            "#,
+            role.name,
+            role.active,
+            id
+        )
+        .execute(pool)
+        .await?;
+
+        if result.rows_affected() == 0 {
+            return Ok(None);
+        }
+
+        Ok(Some(Role {
+            id,
+            name: role.name,
+            active: role.active,
+        }))
+    }
+
+    pub async fn delete(id: i32, pool: &PgPool) -> Result<u64> {
+        let result = sqlx::query!(
+            r#"
+            DELETE FROM roles
+            WHERE id = $1
+            "#,
+            id
+        )
+        .execute(pool)
+        .await?;
+
+        Ok(result.rows_affected())
+    }
 }

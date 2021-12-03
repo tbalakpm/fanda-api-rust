@@ -1,0 +1,30 @@
+###
+@host = 127.0.0.1:8080
+###
+
+GET http://{{host}}/roles
+
+###
+GET http://127.0.0.1:8080/roles/2
+
+###
+POST http://{{host}}/roles
+Content-Type: application/json
+
+{
+    "name": "Test5",
+    "active": true
+}
+
+###
+PUT http://{{host}}/roles/1
+Content-Type: application/json
+
+{
+    "name": "Administrators",
+    "active": true   
+}
+
+###
+
+DELETE http://{{host}}/roles/1
