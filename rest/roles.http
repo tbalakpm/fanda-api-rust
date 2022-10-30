@@ -5,14 +5,14 @@
 GET http://{{host}}/roles
 
 ###
-GET http://127.0.0.1:8080/roles/2
+GET http://{{host}}/roles/2
 
 ###
 POST http://{{host}}/roles
 Content-Type: application/json
 
 {
-    "name": "Administrators",
+    "name": "Test 1",
     "is_enabled": true
 }
 

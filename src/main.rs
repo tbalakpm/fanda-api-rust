@@ -9,6 +9,7 @@ use dotenv::dotenv;
 // use sqlx::sqlite::SqlitePoolOptions;
 use sqlx::postgres::PgPoolOptions;
 
+// mod helpers;
 mod roles;
 mod users;
 

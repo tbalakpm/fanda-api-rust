@@ -1,5 +1,4 @@
 use actix_web::{get, post, web, HttpResponse, Responder};
-// use sqlx::SqlitePool;
 use sqlx::PgPool;
 
 use crate::users::{User, UserRequest};

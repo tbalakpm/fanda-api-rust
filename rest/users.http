@@ -5,14 +5,20 @@
 GET http://{{host}}/users
 
 ###
-GET http://127.0.0.1:8080/users/2
+GET http://{{host}}/users/3
 
 ###
 POST http://{{host}}/users
 Content-Type: application/json
 
 {
-    "name": "Administrators",
+    "login_name": "bseetha",
+    "email_address": "bseetha@fandatech.net",
+    "mobile_number": "9789813931",
+    "first_name": "Seethalakshmi",
+    "last_name": "Balamurugan",
+    "password": "Welcome@123",
+    "role_id": 1,
     "is_enabled": true
 }
 
